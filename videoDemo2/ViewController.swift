@@ -12,7 +12,9 @@ import AVFoundation
 class ViewController: UIViewController{
    
     
-
+    @IBAction func takeVideo(_ sender: Any) {
+    }
+    
    
     @IBOutlet weak var videoStartBTN: UIButton!
     
@@ -28,6 +30,8 @@ class ViewController: UIViewController{
     var frontCamera: AVCaptureDevice?
     
     var currectCamera: AVCaptureDevice?
+    
+    
     var photoOutput: AVCapturePhotoOutput?
     
     var previewLayer = AVCaptureVideoPreviewLayer()
@@ -104,10 +108,10 @@ class ViewController: UIViewController{
     }
 
     @IBAction func toStartRecord(_ sender: Any) {
-        
-        
-        
         print("start recording ....")
+        let settings = AVCapturePhotoSettings()
+        photoOutput?.capturePhoto(with: settings, delegate: self)
+        
     }
     
     @IBAction func toStopRecord(_ sender: Any) {
@@ -118,13 +122,14 @@ class ViewController: UIViewController{
     @IBAction func toTakePicture(_ sender: Any) {
         let settings = AVCapturePhotoSettings()
         photoOutput?.capturePhoto(with: settings, delegate: self)
+//        performSegue(withIdentifier: "showPhoto_Segue", sender: nil)
     }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showPhoto_Segue"{
-//            let previewVC = segue.destination
-//            previewVC.image = self.image
+        if segue.identifier == "helloworldimage" {
+            let previewVC = segue.destination as! PreviewViewController
+            previewVC.image = self.image
             
         }
     }
@@ -137,7 +142,7 @@ extension ViewController: AVCaptureFileOutputRecordingDelegate, AVCapturePhotoCa
         if let imageDate =  photo.fileDataRepresentation(){
             print(imageDate)
             image = UIImage(data: imageDate)
-            performSegue(withIdentifier: "showPhoto_Segue", sender: nil)
+            performSegue(withIdentifier: "helloworldimage", sender: nil)
         }
     }
 //    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
